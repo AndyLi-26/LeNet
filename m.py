@@ -1,3 +1,4 @@
+from math import exp
 def new(r,c):
     return [[0 for _ in range(c)] for _ in range(r)]
 
@@ -40,6 +41,10 @@ def T(A):
     return C
     
 
+def sig(L):
+    assert str(L[0]).isnumeric(), "Layer shape: "+str(shape(L))
+    return list(map(lambda x: 1/(1+math.exp(-x)),L))
+
 def ReLU(L,a=0):
     assert str(L[0]).isnumeric(), "Layer shape: "+str(shape(L))
     O=[]
@@ -49,4 +54,9 @@ def ReLU(L,a=0):
         else:
             O.append(a*i)
     return O
+
+def copy(A):
+  A=[]
     
+    
+ 
