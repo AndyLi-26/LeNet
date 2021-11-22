@@ -40,7 +40,6 @@ def T(A):
             C[j][i]=A[i][j]
     return C
     
-
 def sig(L):
     assert str(L[0]).isnumeric(), "Layer shape: "+str(shape(L))
     return list(map(lambda x: 1/(1+math.exp(-x)),L))
