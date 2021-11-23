@@ -7,7 +7,7 @@ class linear:
     def __call__(self,Lin,A=None):
         self.Lin=Lin
         if A:
-            temp=ele(self.W,A,'W')
+            temp=ele(self.W,A,'+')
         else:
             temp=sel.W
         self.Lout=mul(Lin,temp)
@@ -16,9 +16,9 @@ class linear:
     #def backward(self,gin):
     #    mul(gin*self.Lout)
         
-    def update(self,A):
+    def update(self,A,op):
         if shape(A)==shape(self.W) , "A+W: "str(shape(A)) + " + " + str(shape(self.W))
-        self.W=ele(self.W,A,"+")
+        self.W=ele(self.W,A,op)
         
         
     
