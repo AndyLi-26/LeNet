@@ -4,7 +4,7 @@ def new(r,c):
 
 def dot(a,b):
     assert len(a)==len(b), str(len(a))+'dot'+str(len(b))
-    return sum([a[i]*b[i] for i in range(len(a)])
+    return sum([a[i]*b[i] for i in range(len(a))])
 
 def shape(A):
     return len(A),len(A[0])
@@ -14,7 +14,7 @@ def mul(A,B):
     C=new(len(A),len(B[0]))
     for i in range(len(C)):
         for j in range(len(C[0])):
-            C[i][j]=sum([A[i][k]*B[k][j] for k in range(len(A[0])])
+            C[i][j]=sum([A[i][k]*B[k][j] for k in range(len(A[0]))])
     return C
     
 def ele(A,B,op):
@@ -45,17 +45,16 @@ def sig(L):
     return list(map(lambda x: 1/(1+math.exp(-x)),L))
 
 def ReLU(L,a=0):
-    assert str(L[0]).isnumeric(), "Layer shape: "+str(shape(L))
-    O=[]
-    for i in L:
-        if i>0:
-            O.append(i)
-        else:
-            O.append(a*i)
-    return O
+    return [[(i if i>0 else a*i) for i in j] for j in L]
 
 def copy(A):
   A=[]
+  
+if __name__=="__main__":
+    A=new(256,784)
+    B=new(784,512)
+    C=mul(A,B)
+    
     
     
  

@@ -1,7 +1,8 @@
 from random import random
 from m import *
+from NN import *
 class MLP:
-    def __init__(self,lr,s,d):
+    def __init__(self,lr,s):
         '''
             s: pick s portion of the data during trainning
             d: modify d portion of the weight in the model
@@ -9,10 +10,10 @@ class MLP:
         self.s=s
         self.train=False
         self.lr=lr
-        self.layer = [nn.Linear(784, 512),
-        nn.Linear(512, 256),
-        nn.Linear(256, 128),
-        nn.Linear(128, 10)]
+        self.layer = [linear(784, 512),
+        linear(512, 256),
+        linear(256, 128),
+        linear(128, 10)]
         
     def test(self,x,y):
         rawy=self.forward(x)
@@ -22,11 +23,11 @@ class MLP:
     def forward(self, x, A=None):
         if A:
             for i,l in enumerate(self.layer[:-1]):
-                x=Relu(l(x,A[i]))
+                x=ReLU(l(x,A[i]))
             x=self.layer[-1](x)
         else:
             for i in self.layer[:-1]:
-                x=Relu(i(x))
+                x=ReLU(i(x))
             x=self.layer[-1](x)
         return x
         
@@ -39,7 +40,7 @@ class MLP:
                 correct+=1
         return correct/len(y)
         
-    def update(x,y,pre_acc):
+    def update(self,x,y,pre_acc):
         assert len(x)==len(y),"x has"+str(len(x))+"data"+",y has"+str(len(y))+"data"
         #pick new step size weight matrix
         H=[]
@@ -48,20 +49,14 @@ class MLP:
             h=new(r,c)
             for i in range(r):
                 for j in range(c):
-                    if random()<self.d:
-                        h[i][j]=random()*self.lr
+                    if random()<self.s: #monte calro
+                        h[i][j]=random()*self.lr*0.3-0.15
             H.append(h)
-        #pick train data
-        newx=[]
-        newy=[]
-        for i in range(len(x)):
-            if random()<self.s
-                newx.append(x[i])
-                newy.append(y[i])
+        
         #forward
-        rawy=self.forward(newx,H)
+        rawy=self.forward(x,H)
         #get new acc and update
-        new_acc=self.acc(rawy,newy)
+        new_acc=self.acc(rawy,y)
         if pre_acc>new_acc:
             for i,l in enumerate(self.layer):
                 l.update(H[i],"-")
@@ -69,4 +64,4 @@ class MLP:
             for i,l in enumerate(self.layer):
                 l.update(H[i],"+")
         # return updated acc
-        return self.test(newx,newy)
+        return self.test(x,y)

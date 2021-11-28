@@ -9,7 +9,7 @@ class linear:
         if A:
             temp=ele(self.W,A,'+')
         else:
-            temp=sel.W
+            temp=self.W
         self.Lout=mul(Lin,temp)
         return self.Lout[:]
         
@@ -17,7 +17,7 @@ class linear:
     #    mul(gin*self.Lout)
         
     def update(self,A,op):
-        if shape(A)==shape(self.W) , "A+W: "str(shape(A)) + " + " + str(shape(self.W))
+        assert shape(A)==shape(self.W), "A+W: "+str(shape(A)) + " + " + str(shape(self.W))
         self.W=ele(self.W,A,op)
         
         
