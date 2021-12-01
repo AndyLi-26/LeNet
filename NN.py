@@ -4,14 +4,14 @@ class linear:
         training=True
         self.W=new(Cin,Cout)
         
-    def __call__(self,Lin,A=None):
+    def __call__(self,Lin,h=None,op=''):
         self.Lin=Lin
-        if A:
-            temp=ele(self.W,A,'+')
+        if h:
+            temp=ele(self.W,h,op)
         else:
             temp=self.W
         self.Lout=mul(Lin,temp)
-        return self.Lout[:]
+        return self.Lout
         
     #def backward(self,gin):
     #    mul(gin*self.Lout)

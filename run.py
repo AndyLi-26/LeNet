@@ -5,15 +5,14 @@ from math import ceil
 if __name__=="__main__":
     x,y=getdata("mnist_train.csv")
     print("reading done")
-    model=MLP(lr=0.05,s=0.1)
+    model=MLP(lr=0.05,s=0.01)
     print("model built")
     batch_size=256
     model.train=True
-    pre_acc=0
     for _ in range(10):
-        shuffle(x)
+        shuffle(x) ## TODO: shuffle x and y together
         for i in range(ceil(len(x)/batch_size)):
-            pre_acc=model.update(x[i*batch_size:min((i+1)*batch_size,len(x))],y[i*batch_size:min((i+1)*batch_size,len(x))],pre_acc)
+            pre_acc=model.update(x[i*batch_size:min((i+1)*batch_size,len(x))],y[i*batch_size:min((i+1)*batch_size,len(x))])
             print(i,pre_acc)
         print('*****************************************************************')
         print('*****************************************************************')

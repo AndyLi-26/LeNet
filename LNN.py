@@ -20,10 +20,10 @@ class MLP:
         acc=self.acc(rawy,y)
         return acc
         
-    def forward(self, x, A=None):
-        if A:
+    def forward(self, x, H=None,op=''):
+        if H:
             for i,l in enumerate(self.layer[:-1]):
-                x=ReLU(l(x,A[i]))
+                x=ReLU(l(x,H[i],op))
             x=self.layer[-1](x)
         else:
             for i in self.layer[:-1]:
@@ -40,7 +40,7 @@ class MLP:
                 correct+=1
         return correct/len(y)
         
-    def update(self,x,y,pre_acc):
+    def update(self,x,y):
         assert len(x)==len(y),"x has"+str(len(x))+"data"+",y has"+str(len(y))+"data"
         #pick new step size weight matrix
         H=[]
@@ -54,14 +54,16 @@ class MLP:
             H.append(h)
         
         #forward
-        rawy=self.forward(x,H)
+        rawy1=self.forward(x,H,'+')
+        rawy2=self.forward(x,H,'-')
         #get new acc and update
-        new_acc=self.acc(rawy,y)
-        if pre_acc>new_acc:
-            for i,l in enumerate(self.layer):
-                l.update(H[i],"-")
-        else:
+        new_acc1=self.acc(rawy1,y)
+        new_acc2=self.acc(rawy2,y)
+        if new_acc1>new_acc2:
             for i,l in enumerate(self.layer):
                 l.update(H[i],"+")
-        # return updated acc
-        return self.test(x,y)
+                return new_acc1
+        else:
+            for i,l in enumerate(self.layer):
+                l.update(H[i],"-")
+                return new_acc2
