@@ -3,7 +3,7 @@ from LNN import *
 from random import shuffle,random
 from math import ceil
 if __name__=="__main__":
-    x,y=getdata("mnist_train.csv")
+    x,y=getdata("mnist_train.csv") 
     print("reading done")
     model=MLP(lr=0.05,s=0.01)
     print("model built")

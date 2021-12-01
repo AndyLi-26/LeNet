@@ -12,10 +12,7 @@ class linear:
             temp=self.W
         self.Lout=mul(Lin,temp)
         return self.Lout
-        
-    #def backward(self,gin):
-    #    mul(gin*self.Lout)
-        
+                
     def update(self,A,op):
         assert shape(A)==shape(self.W), "A+W: "+str(shape(A)) + " + " + str(shape(self.W))
         self.W=ele(self.W,A,op)

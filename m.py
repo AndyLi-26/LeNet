@@ -1,3 +1,4 @@
+## use numpy do operation
 from math import exp
 def new(r,c):
     return [[0 for _ in range(c)] for _ in range(r)]

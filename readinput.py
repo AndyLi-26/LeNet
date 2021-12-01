@@ -1,7 +1,7 @@
 def getdata(filename):
     fptr=open(filename,'r')
     fptr.readline()
-    x,y=[],[]
+    x,y=[],[] #read as numpy matrix
     for l in fptr:
         data=l.split(',')
         data=list(map(int,data))
