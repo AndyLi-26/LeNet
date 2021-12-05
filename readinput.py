@@ -1,4 +1,7 @@
+import numpy as np
+
 def getdata(filename):
+    
     fptr=open(filename,'r')
     fptr.readline()
     x,y=[],[] #read as numpy matrix
@@ -8,7 +11,8 @@ def getdata(filename):
         y.append(data[0])
         x.append(data[1:])
     fptr.close()
-    return x,y
+    return np.array(x),np.array(y)
+
 if __name__=="__main__":
     x,y=getdata("mnist_test.csv")
     
