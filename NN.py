@@ -14,8 +14,6 @@ class linear:
         return self.Lout
                 
     def update(self,A,op):
-        assert shape(A)==shape(self.W), "A+W: "+str(shape(A)) + " + " + str(shape(self.W))
+        # assert A.shape==self.W.shape, "A+W: "+str(A.shape) + " + " + str(self.W.shape)
         self.W=ele(self.W,A,op)
-        
-        
     
