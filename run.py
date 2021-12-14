@@ -15,24 +15,20 @@ if __name__=="__main__":
             shuffled_b[new_index] = b[old_index]
         return shuffled_a, shuffled_b
 
-
     x,y=getdata("mnist_train.csv") 
     print("reading done")
     model=MLP(lr=0.05,s=0.01)
     print("model built")
     batch_size=256
     model.train=True
-    for _ in range(10):
-        # shuffle(x) ## TODO: shuffle x and y together
-
+    for e in range(100):
         x,y = shuffle_in_unison(x,y)
+        acc=0
         for i in range(ceil(len(x)/batch_size)):
-            pre_acc=model.update(x[i*batch_size:min((i+1)*batch_size,len(x))],y[i*batch_size:min((i+1)*batch_size,len(x))])
-            print(i,pre_acc)
-        print('*****************************************************************')
-        print('*****************************************************************')
-        print('*****************************************************************')
-        print('*****************************************************************')
+            acc+=model.update(x[i*batch_size:min((i+1)*batch_size,len(x))],y[i*batch_size:min((i+1)*batch_size,len(x))])
+            
+        print(e,acc/ceil(len(x)/batch_size))
+        #print('*****************************************************************')
     x,y=getdata("mnist_test.csv")
     test_acc=model.test(x,y)
     print(test_acc)

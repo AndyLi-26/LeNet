@@ -1,6 +1,7 @@
 from random import random
 from m import *
 from NN import *
+import numpy
 class MLP:
     def __init__(self,lr,s):
         '''
@@ -21,7 +22,8 @@ class MLP:
         return acc
         
     def forward(self, x, H=None,op=''):
-        if H:
+    # op 1+ 0-
+        if not H is None:
             for i,l in enumerate(self.layer[:-1]):
                 x=ReLU(l(x,H[i],op))
             x=self.layer[-1](x)
@@ -33,37 +35,38 @@ class MLP:
         
     def acc(self,rawy,y):
         assert len(rawy)==len(y),"rawy has"+str(len(rawy))+"data"+",y has"+str(len(y))+"data"
-        correct=0
-        for yi,yd in enumerate(rawy):
-            ind=yd.index(max(yd))
-            if y[yi]==ind:
-                correct+=1
-        return correct/len(y)
+        ##correct=0
+        ##for yi,yd in enumerate(rawy):
+        ##    ind=yd.index(max(yd))
+        ##    if y[yi]==ind:
+        ##        correct+=1
+        return (y == np.argmax(rawy,1)).sum()/len(y)
         
     def update(self,x,y):
         assert len(x)==len(y),"x has"+str(len(x))+"data"+",y has"+str(len(y))+"data"
         #pick new step size weight matrix
         H=[]
         for i in range(len(self.layer)):
-            r,c=shape(self.layer[i].W)
+            r,c=np.shape(self.layer[i].W)
             h=new(r,c)
             for i in range(r):
                 for j in range(c):
                     if random()<self.s: #monte calro
                         h[i][j]=random()*self.lr*0.3-0.15
             H.append(h)
+        H=np.array(H)
         
         #forward
-        rawy1=self.forward(x,H,'+')
-        rawy2=self.forward(x,H,'-')
+        rawy1=self.forward(x,H,0)
+        rawy2=self.forward(x,H,1)
         #get new acc and update
         new_acc1=self.acc(rawy1,y)
         new_acc2=self.acc(rawy2,y)
         if new_acc1>new_acc2:
             for i,l in enumerate(self.layer):
-                l.update(H[i],"+")
+                l.update(H[i])
                 return new_acc1
         else:
             for i,l in enumerate(self.layer):
-                l.update(H[i],"-")
+                l.update(-1*H[i])
                 return new_acc2
